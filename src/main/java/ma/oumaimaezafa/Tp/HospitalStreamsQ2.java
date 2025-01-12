@@ -12,11 +12,12 @@ import org.apache.spark.sql.types.StructType;
 
 import java.util.concurrent.TimeoutException;
 
-import static org.apache.spark.sql.functions.col;
+import static org.apache.spark.sql.functions.*;
 
-public class HospitalStreamsQ1 {
+public class HospitalStreamsQ2 {
     public static void main(String[] args) throws TimeoutException, StreamingQueryException {
 
+        // Initialiser la session Spark
         SparkSession sparkSession = SparkSession.builder()
                 .appName("Spark Structured Streaming")
                 .getOrCreate();
@@ -36,11 +37,20 @@ public class HospitalStreamsQ1 {
                 .option("header", true)
                 .csv("hdfs://namenode:8020/input");
 
-        Dataset<Row> cleanedInputTables = inputTables.filter(col("service").isNotNull());
+        // Filtrer les lignes où "date" est NULL
+        Dataset<Row> filteredInputTables = inputTables.filter(col("date").isNotNull());
 
-        Dataset<Row> incidentsByService = cleanedInputTables.groupBy(col("service")).count();
+        // Extraire l'année de la colonne "date"
+        Dataset<Row> inputTablesWithYear = filteredInputTables.withColumn("year", year(col("date")));
 
-        incidentsByService.writeStream()
+        // Agréger les incidents par année
+        Dataset<Row> incidentsByYear = inputTablesWithYear.groupBy("year").count();
+
+        // Trier par nombre d'incidents (décroissant) et sélectionner les deux premières années
+        Dataset<Row> topTwoYears = incidentsByYear.orderBy(col("count").desc()).limit(2);
+
+        // Afficher les résultats en continu dans la console
+        topTwoYears.writeStream()
                 .outputMode("complete") // Mode de sortie pour les agrégations
                 .format("console") // Afficher dans la console
                 .trigger(Trigger.ProcessingTime(7000)) // Déclencher toutes les 7 secondes
