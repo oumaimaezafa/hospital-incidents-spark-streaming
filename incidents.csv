@@ -1,0 +1,11 @@
+Id,title,description,service,date
+1,Equipment failure,The monitor in operating room 2 is not working.,Operating Room,2023-10-01 08:15:00
+2,Delivery delay,Medications for the pharmacy did not arrive on time.,Pharmacy,2023-10-01 09:30:00
+3,Air conditioning issue,The air conditioning in room 101 is not working.,Maintenance,2023-10-02 14:20:00
+4,Dosage error,A patient received an incorrect dose of medication.,Pharmacy,2023-10-03 10:45:00
+5,Network issue,The Wi-Fi network is down across the hospital.,IT,2023-10-03 16:00:00
+6,Staff shortage,Not enough nurses in the emergency department.,Emergency,2023-10-04 07:50:00
+7,Electrical issue,Power outage in the radiology department.,Maintenance,2023-10-04 12:10:00
+8,Record error,A patient's medical record cannot be found.,Administration,2023-10-05 11:30:00
+9,Elevator breakdown,Elevator B is stuck on the 3rd floor.,Maintenance,2023-10-05 15:45:00
+10,Appointment delay,A patient waited over an hour for their appointment.,Consultation,2023-10-06 09:00:00
